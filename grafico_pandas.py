@@ -1,13 +1,14 @@
-# criar dados para o dataframe
 import pandas as pd
 import matplotlib.pyplot as plt
+
+# Dados do primeiro DataFrame (pessoas)
 dados = {
-"Nome": ["Arthur", "Maria", "Mateus", "Carlos", "Bruna"],
-"Idade": [28,22, 18, 35, 11], 
-"Cidade": ["Cotia", "Caracas", "São Paulo", "Osasco", "Vargem"]
-    
+    "Nome": ["Arthur", "Maria", "Mateus", "Carlos", "Bruna"],
+    "Idade": [28, 22, 18, 35, 11], 
+    "Cidade": ["Cotia", "Caracas", "São Paulo", "Osasco", "Vargem"]
 }
 
+# Dados do segundo DataFrame (carros)
 dados2 = {
     "Nome": [
         "Volkswagen Gol",
@@ -59,38 +60,42 @@ dados2 = {
     ]
 }
 
+# Cria os DataFrames a partir dos dicionários
 df = pd.DataFrame(dados)
+print("DataFrame de pessoas:")
 print(df)
 print("\n")
 
 df2 = pd.DataFrame(dados2)
+print("DataFrame de carros:")
 print(df2)
 
+# Salva o df2 em um arquivo CSV e o lê novamente, apenas para exemplificar
 df2.to_csv("pandas_carros.csv", index=False)
-
 df2_csv = pd.read_csv("pandas_carros.csv")
-print("\n")
+
+print("\nDataFrame lido do CSV:")
+print(df2_csv)
 print("\n")
 
+# Filtra os carros da marca Fiat
 df_filtrado = df2[df2["Fabricante"] == "Fiat"]
+print("Carros da marca 'Fiat':")
 print(df_filtrado)
+print("\n")
 
-df_ordenado = df.sort_values(by="Idade", ascending=True)
-print(df_ordenado)
+# Gerador de Gráfico de Colunas:
+# Vamos criar um gráfico que exibe a quantidade de carros por fabricante (do DataFrame df2)
 
-print(df.describe())
+# Contagem de carros por fabricante
+contagem_fabricantes = df2["Fabricante"].value_counts()
 
-media_cidade = df.groupby("Cidade")["Idade"].mean()
-print("a media da cidade é:\n", media_cidade)
-      
-df.plot(kind="bar", x="Nome", y="Idade", color="blue")      
-plt.title("Idade das pessoas")
-plt.xlabel("Nome")
-plt.ylabel("Idade")
-plt.show()      
-
-df.boxplot(column="Idade", by="Cidade", grid=False)
-plt.title("Distribuição da Idadde por Cidade")
-plt.xlabel("Cidade")
-plt.ylabel("Idade")
-plt.show()      
+# Configurando e plotando o gráfico de barras (colunas)
+plt.figure(figsize=(8, 8))
+plt.bar(contagem_fabricantes.index, contagem_fabricantes.values, 
+        color=['skyblue', 'salmon', 'lightgreen', 'violet'])
+plt.title("Contagem de Carros por Fabricante")
+plt.xlabel("Fabricante")
+plt.ylabel("Quantidade de Carros")
+plt.tight_layout()  # Ajusta o layout para melhor visualização
+plt.show()
